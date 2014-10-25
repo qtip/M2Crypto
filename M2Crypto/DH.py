@@ -66,6 +66,15 @@ class DH:
         assert m2.dh_type_check(self.dh), "'dh' type error"
         return m2.dhparams_print(bio._ptr(), self.dh)
 
+    def as_pem(self):
+        """
+        Returns the Diffie-Hellman parameters as a string in PEM format.
+        """
+        assert m2.dh_type_check(self.dh), "'dh' type error"
+        bio = BIO.MemoryBuffer()
+        m2.dh_write_params(self.dh, bio._ptr())
+        return bio.read()
+
 
 def gen_params(plen, g, callback=genparam_callback):
     return DH(m2.dh_generate_parameters(plen, g, callback), 1)

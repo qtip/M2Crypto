@@ -182,5 +182,14 @@ PyObject *dh_set_g(DH *dh, PyObject *value) {
     Py_INCREF(Py_None);
     return Py_None;
 }
+
+int dh_write_params(DH *dh, BIO *f) {
+    int ret;
+
+    Py_BEGIN_ALLOW_THREADS
+    ret = PEM_write_bio_DHparams(f, dh);
+    Py_END_ALLOW_THREADS
+    return ret;
+}
 %}
 
